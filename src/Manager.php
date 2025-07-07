@@ -5,7 +5,7 @@ namespace Wenprise\LicenseManager;
 /**
  * WordPress 插件许可证管理类
  */
-class LicenseManager
+class Manager
 {
     /**
      * 插件版本
@@ -71,7 +71,7 @@ class LicenseManager
         $this->version = $version;
         $this->api_url = rtrim($api_url, '/');
         $this->product_id = $product_id;
-        
+
         // 如果未指定选项名称，则使用默认格式
         $slug = sanitize_title($plugin_name);
         $this->license_key_option = $license_key_option ?: "{$slug}_license_key";
@@ -139,7 +139,7 @@ class LicenseManager
     public function validate_license(string $license_key = null): array
     {
         $license_key = $license_key ?: $this->get_license_key();
-        
+
         if (empty($license_key)) {
             return [
                 'success' => false,
@@ -200,7 +200,7 @@ class LicenseManager
         if (isset($data['success']) && $data['success']) {
             // 更新许可证状态
             $this->set_license_status('active');
-            
+
             return [
                 'success' => true,
                 'license' => $data['license'] ?? [],
@@ -208,7 +208,7 @@ class LicenseManager
         } else {
             // 更新许可证状态
             $this->set_license_status('inactive');
-            
+
             return [
                 'success' => false,
                 'error' => $data['message'] ?? '许可证验证失败',
@@ -225,7 +225,7 @@ class LicenseManager
     public function activate_license(string $license_key = null): array
     {
         $license_key = $license_key ?: $this->get_license_key();
-        
+
         if (empty($license_key)) {
             return [
                 'success' => false,
@@ -289,7 +289,7 @@ class LicenseManager
         if (isset($data['success']) && $data['success']) {
             // 更新许可证状态
             $this->set_license_status('active');
-            
+
             return [
                 'success' => true,
                 'license' => $data['license'] ?? [],
@@ -297,7 +297,7 @@ class LicenseManager
         } else {
             // 更新许可证状态
             $this->set_license_status('inactive');
-            
+
             return [
                 'success' => false,
                 'error' => $data['message'] ?? '许可证激活失败',
@@ -313,7 +313,7 @@ class LicenseManager
     public function deactivate_license(): array
     {
         $license_key = $this->get_license_key();
-        
+
         if (empty($license_key)) {
             return [
                 'success' => false,
@@ -374,7 +374,7 @@ class LicenseManager
         if (isset($data['success']) && $data['success']) {
             // 更新许可证状态
             $this->set_license_status('inactive');
-            
+
             return [
                 'success' => true,
                 'message' => $data['message'] ?? '许可证已成功停用',
@@ -395,7 +395,7 @@ class LicenseManager
     public function check_license_status(): array
     {
         $license_key = $this->get_license_key();
-        
+
         if (empty($license_key)) {
             return [
                 'success' => false,
@@ -457,7 +457,7 @@ class LicenseManager
             // 更新许可证状态
             $license_status = $data['license']['status'] ?? 'inactive';
             $this->set_license_status($license_status === 'active' ? 'active' : 'inactive');
-            
+
             return [
                 'success' => true,
                 'license' => $data['license'] ?? [],
@@ -466,7 +466,7 @@ class LicenseManager
         } else {
             // 更新许可证状态
             $this->set_license_status('inactive');
-            
+
             return [
                 'success' => false,
                 'error' => $data['message'] ?? '许可证状态检查失败',

@@ -24,10 +24,10 @@ composer require wenprise/license-manager
 ### 初始化许可证管理器
 
 ```php
-use Wenprise\LicenseManager\LicenseManager;
+use Wenprise\LicenseManager\Manager;
 
 // 创建许可证管理器实例
-$license_manager = new LicenseManager(
+$license_manager = new Manager(
     '插件名称',                       // 插件名称
     '1.0.0',                         // 插件版本
     'https://srv.wpcio.com/wp-json/wplm/v1', // API URL
@@ -111,16 +111,13 @@ if ($license_manager->is_license_active()) {
 ## 添加许可证设置页面
 
 ```php
-use Wenprise\LicenseManager\Admin\LicenseSettingsPage;
+use Wenprise\LicenseManager\SettingsPage;
 
-// 创建许可证设置页面
-$settings_page = new LicenseSettingsPage(
-    $license_manager,            // 许可证管理器实例
-    '插件许可证',                // 页面标题
-    '许可证',                    // 菜单标题
-    'your-plugin-license',       // 菜单 slug
-    'options-general.php'        // 父菜单（这里是设置菜单）
-);
+$settings = new SettingsPage(
+			'Wenprise Hotspot Block',
+			'1.0',
+			'wenprise-hotspot-block'
+		);
 ```
 
 ## 完整插件集成示例
