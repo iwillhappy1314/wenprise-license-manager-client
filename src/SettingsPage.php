@@ -116,7 +116,6 @@ class SettingsPage
 		$this->license_manager = new Manager(
 			$this->plugin_name,
 			$this->plugin_version,
-			'https://srv.wpcio.com/wp-json/wplm/v1',
 			$this->license_key_option,
 			$this->license_status_option
 		);

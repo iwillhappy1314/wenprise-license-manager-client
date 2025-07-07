@@ -21,6 +21,13 @@ class Manager
      */
     private $plugin_name;
 
+	/**
+	 * 插件名称
+	 *
+	 * @var string
+	 */
+	private $plugin_slug;
+
     /**
      * 许可证服务器 URL
      *
@@ -62,21 +69,38 @@ class Manager
     public function __construct(
         string $plugin_name,
         string $version,
-        string $api_url = 'https://srv.wpcio.com/wp-json/wplm/v1',
         string $license_key_option = '',
         string $license_status_option = '',
         ?int $product_id = null
     ) {
         $this->plugin_name = $plugin_name;
+	    $this->plugin_slug = $this->generate_slug($plugin_name);
         $this->version = $version;
-        $this->api_url = rtrim($api_url, '/');
+        $this->api_url = 'https://srv.wpcio.com/wp-json/wplm/v1';
         $this->product_id = $product_id;
 
         // 如果未指定选项名称，则使用默认格式
-        $slug = sanitize_title($plugin_name);
-        $this->license_key_option = $license_key_option ?: "{$slug}_license_key";
-        $this->license_status_option = $license_status_option ?: "{$slug}_license_status";
+        $this->license_key_option = $license_key_option ?: $this->plugin_slug . "_license_key";
+        $this->license_status_option = $license_status_option ?: $this->plugin_slug . "_license_status";
     }
+
+
+	/**
+	 * 生成插件的小写形式作为 slug
+	 *
+	 * @param string $name 插件名称
+	 *
+	 * @return string 生成的 slug
+	 */
+	private function generate_slug($name)
+	{
+		// 转换为小写，替换空格为下划线，移除非字母数字下划线字符
+		$slug = strtolower($name);
+		$slug = str_replace(' ', '_', $slug);
+
+		return preg_replace('/[^a-z0-9_]/', '', $slug);
+	}
+
 
     /**
      * 获取许可证密钥
